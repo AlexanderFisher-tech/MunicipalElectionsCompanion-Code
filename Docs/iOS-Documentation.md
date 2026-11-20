@@ -215,6 +215,8 @@ CandidateSelections/mec.verify.20261119@example.com_15
 
 ![Firebase project overview (appleios-5e236)](screenshots/firebase-project.png)
 
+![Firebase Authentication users (email/password sign-in)](screenshots/firebase-auth.png)
+
 ![Firestore data: a CandidateSelections document](screenshots/firestore-selections.png)
 
 ![Firestore data: a UserProfiles document](screenshots/firestore-userprofiles.png)
