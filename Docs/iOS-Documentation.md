@@ -52,6 +52,7 @@ Views never call URLSession or Firestore directly. They go through ViewModels, w
 | 8 | Selections stored through the voting guide API (`/api/savedcandidates`) | Replaced with Firestore CRUD, including notes. |
 | 9 | Website and email weren't tappable, and a layout bug in `MunicipalityView` | Website and email are links. Fixed the layout bug (a `Spacer` placed directly in a `NavigationStack`). |
 | 10 | Firestore was in test mode (open to anyone, expiring) | Deployed owner-only security rules (see section 6). |
+| 11 | Pitt Meadows allowed 6 councillors (the API's value), but the spec allows 5 | The app limits Pitt Meadows to 5 councillors (`SeatLimitOverrides` in `ElectionService`). |
 
 ## 4. Authentication (JWT)
 
@@ -240,7 +241,7 @@ CandidateSelections/mec.verify.20261119@example.com_15
 - **Seat limits:** checked against a fresh server read just before saving. For example, "You can only choose 1 Mayor in Burnaby."
 - **City:** a candidate from another city can't be saved.
 
-The spec's example says Pitt Meadows has 5 councillors. The Web API returns 6 councillor seats, so the app follows the API's `seatsAvailable` value.
+**Pitt Meadows:** a resident can choose at most 1 mayor, 5 councillors and 2 school trustees, as the spec requires. The Web API reports 6 councillor seats, so `ElectionService` applies the spec's limit of 5 (`SeatLimitOverrides`). The lower limit is used everywhere seats are shown or checked. Other cities use the API's `seatsAvailable` value.
 
 **Error handling:** user-friendly messages are shown for:
 - Firestore connection errors;

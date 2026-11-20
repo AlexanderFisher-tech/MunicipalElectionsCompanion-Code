@@ -17,7 +17,7 @@ struct Candidate: Codable, Hashable {
     let positionId: Int
     let positionName: String?
     /// Selection limit for this candidate's office in this city (e.g. Mayor = 1).
-    let seatsAvailable: Int?
+    var seatsAvailable: Int?
     let municipalityId: Int
     let municipalityName: String?
 }

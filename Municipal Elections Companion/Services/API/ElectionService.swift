@@ -37,7 +37,13 @@ final class ElectionService: ElectionServiceProtocol {
     // GET /api/offices?city={name}
     func fetchOffices(city: String) async throws -> [Position] {
         let offices: [Position] = try await client.get("api/offices", query: [cityItem(city)])
-        return offices.filter { $0.municipalityName == nil || $0.municipalityName == city }
+        return offices
+            .filter { $0.municipalityName == nil || $0.municipalityName == city }
+            .map { office in
+                var office = office
+                office.seatsAvailable = SeatLimitOverrides.limit(city: city, position: office.name) ?? office.seatsAvailable
+                return office
+            }
     }
 
     // GET /api/candidates?city={name}[&positionId=]
@@ -47,7 +53,7 @@ final class ElectionService: ElectionServiceProtocol {
             query.append(URLQueryItem(name: "positionId", value: String(positionId)))
         }
         let candidates: [Candidate] = try await client.get("api/candidates", query: query)
-        return candidates.onlyIn(city: city)
+        return candidates.onlyIn(city: city).map { $0.applyingSeatLimit(city: city) }
     }
 
     // GET /api/candidates/search?city={name}&name={q}
@@ -56,16 +62,39 @@ final class ElectionService: ElectionServiceProtocol {
             "api/candidates/search",
             query: [cityItem(city), URLQueryItem(name: "name", value: name)]
         )
-        return candidates.onlyIn(city: city)
+        return candidates.onlyIn(city: city).map { $0.applyingSeatLimit(city: city) }
     }
 
     // GET /api/candidates/{id}?city={name} (404 if the candidate belongs to another city)
     func fetchCandidate(id: Int, city: String) async throws -> Candidate {
-        try await client.get("api/candidates/\(id)", query: [cityItem(city)])
+        let candidate: Candidate = try await client.get("api/candidates/\(id)", query: [cityItem(city)])
+        return candidate.applyingSeatLimit(city: city)
     }
 
     private func cityItem(_ city: String) -> URLQueryItem {
         URLQueryItem(name: "city", value: city)
+    }
+}
+
+/// Seat limits required by the assignment spec that differ from the API's `seatsAvailable`.
+/// The spec says a Pitt Meadows resident may choose at most 5 councillors; the API reports 6.
+enum SeatLimitOverrides {
+    private static let limits: [String: [String: Int]] = [
+        "Pitt Meadows": ["Councillor": 5]
+    ]
+
+    static func limit(city: String, position: String?) -> Int? {
+        guard let position else { return nil }
+        return limits[city]?[position]
+    }
+}
+
+private extension Candidate {
+    func applyingSeatLimit(city: String) -> Candidate {
+        guard let limit = SeatLimitOverrides.limit(city: city, position: positionName) else { return self }
+        var candidate = self
+        candidate.seatsAvailable = limit
+        return candidate
     }
 }
 
