@@ -10,3 +10,6 @@ build/
 # Firebase CLI logs (may contain auth details)
 firebase-debug.log
 *-debug.log
+
+# Firebase app config (shared privately, not in the public repo)
+GoogleService-Info.plist

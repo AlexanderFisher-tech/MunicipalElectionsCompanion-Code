@@ -9,6 +9,7 @@ COMP4977 Assignment 2 (SwiftUI client)
 | Azure API URL | https://mems-api-afisher-ane9a7cmfpb9b9at.canadacentral-01.azurewebsites.net |
 | GitHub repository (iOS) | https://github.com/AlexanderFisher-tech/MunicipalElectionsCompanion-Code |
 | Firebase project ID | `appleios-5e236` |
+| Firebase config file | `GoogleService-Info.plist` is not in the GitHub repo. It's included in the source code copy submitted to the instructor; place it in the `Municipal Elections Companion` app folder to build. |
 | iOS bundle ID | `ca.example.Municipal-Elections-Companion` |
 | Municipality used for development and testing | **Burnaby** (Surrey was used to test switching cities) |
 | Simulators used for screenshots | iPhone 17e and iPad Air 11-inch (M4), iOS 27.2 |
@@ -52,6 +53,7 @@ Views never call URLSession or Firestore directly. They go through ViewModels, w
 | 8 | Selections stored through the voting guide API (`/api/savedcandidates`) | Replaced with Firestore CRUD, including notes. |
 | 9 | Website and email weren't tappable, and a layout bug in `MunicipalityView` | Website and email are links. Fixed the layout bug (a `Spacer` placed directly in a `NavigationStack`). |
 | 10 | Firestore was in test mode (open to anyone, expiring) | Deployed owner-only security rules (see section 6). |
+| 11 | Users could choose 6 councillors (the API's value), but the spec allows 5 | The app limits every city to 5 councillors (`SeatLimitOverrides` in `ElectionService`). |
 
 ## 4. Authentication (JWT)
 
@@ -240,7 +242,7 @@ CandidateSelections/mec.verify.20261119@example.com_15
 - **Seat limits:** checked against a fresh server read just before saving. For example, "You can only choose 1 Mayor in Burnaby."
 - **City:** a candidate from another city can't be saved.
 
-The spec's example says Pitt Meadows has 5 councillors. The Web API returns 6 councillor seats, so the app follows the API's `seatsAvailable` value.
+**Councillor limit:** following the spec's Pitt Meadows example, a resident can choose at most 1 mayor, 5 councillors and 2 school trustees. The Web API reports 6 councillor seats, so `ElectionService` applies a limit of 5 councillors in every city (`SeatLimitOverrides`). This limit is used everywhere seats are shown or checked.
 
 **Error handling:** user-friendly messages are shown for:
 - Firestore connection errors;
