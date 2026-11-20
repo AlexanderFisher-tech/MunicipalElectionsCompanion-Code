@@ -6,3 +6,7 @@ xcuserdata/
 *.xcuserstate
 DerivedData/
 build/
+
+# Firebase CLI logs (may contain auth details)
+firebase-debug.log
+*-debug.log
