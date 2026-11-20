@@ -6,6 +6,12 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BBFCFE9330AFDEB2006D2936 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = BBFCFE9230AFDEB2006D2936 /* FirebaseAuth */; };
+		BBFCFE9730AFDEB2006D2936 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = BBFCFE9630AFDEB2006D2936 /* FirebaseCore */; };
+		BBFCFE9D30AFDEB2006D2936 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BBFCFE9C30AFDEB2006D2936 /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FEBB8F0D308C550500B53264 /* Municipal Elections Companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Municipal Elections Companion.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -22,6 +28,9 @@
 		FEBB8F0A308C550500B53264 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				BBFCFE9D30AFDEB2006D2936 /* FirebaseFirestore in Frameworks */,
+				BBFCFE9330AFDEB2006D2936 /* FirebaseAuth in Frameworks */,
+				BBFCFE9730AFDEB2006D2936 /* FirebaseCore in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -60,6 +69,11 @@
 				FEBB8F0F308C550500B53264 /* Municipal Elections Companion */,
 			);
 			name = "Municipal Elections Companion";
+			packageProductDependencies = (
+				BBFCFE9230AFDEB2006D2936 /* FirebaseAuth */,
+				BBFCFE9630AFDEB2006D2936 /* FirebaseCore */,
+				BBFCFE9C30AFDEB2006D2936 /* FirebaseFirestore */,
+			);
 			productName = "Municipal Elections Companion";
 			productReference = FEBB8F0D308C550500B53264 /* Municipal Elections Companion.app */;
 			productType = "com.apple.product-type.application";
@@ -72,7 +86,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2710;
-				LastUpgradeCheck = 2710;
+				LastUpgradeCheck = 2720;
 				TargetAttributes = {
 					FEBB8F0C308C550500B53264 = {
 						CreatedOnToolsVersion = 27.1;
@@ -88,6 +102,9 @@
 			);
 			mainGroup = FEBB8F04308C550500B53264;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BBFCFE8530AFDEB2006D2936 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FEBB8F0E308C550500B53264 /* Products */;
 			projectDirPath = "";
@@ -174,6 +191,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -231,6 +249,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -241,6 +260,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VF4D2WMPA3;
@@ -273,6 +293,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VF4D2WMPA3;
@@ -320,6 +341,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BBFCFE8530AFDEB2006D2936 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BBFCFE9230AFDEB2006D2936 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBFCFE8530AFDEB2006D2936 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		BBFCFE9630AFDEB2006D2936 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBFCFE8530AFDEB2006D2936 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		BBFCFE9C30AFDEB2006D2936 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BBFCFE8530AFDEB2006D2936 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FEBB8F05308C550500B53264 /* Project object */;
 	validationLevel = 1;
