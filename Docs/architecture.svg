@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" font-family="-apple-system, Helvetica Neue, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+  </defs>
+  <rect width="900" height="560" fill="#fff"/>
+
+  <!-- SwiftUI application -->
+  <rect x="20" y="20" width="860" height="215" rx="14" fill="#eef4fc" stroke="#0a66c2" stroke-width="2"/>
+  <text x="450" y="48" text-anchor="middle" font-size="18" font-weight="700" fill="#0a66c2">SwiftUI Application (iPhone / iPad)</text>
+  <text x="450" y="76" text-anchor="middle" font-size="13" fill="#333">Views  →  ViewModels (@MainActor, @Observable, MVVM)  →  Service protocols</text>
+
+  <rect x="50" y="95" width="240" height="120" rx="10" fill="#fff" stroke="#7aa7d9"/>
+  <text x="170" y="118" text-anchor="middle" font-size="14" font-weight="700">API services</text>
+  <text x="170" y="142" text-anchor="middle" font-size="12" fill="#333">APIClient</text>
+  <text x="170" y="160" text-anchor="middle" font-size="12" fill="#333">ElectionService</text>
+  <text x="170" y="178" text-anchor="middle" font-size="12" fill="#666">URLSession · async/await · Codable</text>
+
+  <rect x="330" y="95" width="240" height="120" rx="10" fill="#fff" stroke="#7aa7d9"/>
+  <text x="450" y="118" text-anchor="middle" font-size="14" font-weight="700">Authentication services</text>
+  <text x="450" y="142" text-anchor="middle" font-size="12" fill="#333">AuthService · AuthAPIService</text>
+  <text x="450" y="160" text-anchor="middle" font-size="12" fill="#333">FirebaseAuthService · JWTDecoder</text>
+  <text x="450" y="178" text-anchor="middle" font-size="12" fill="#333">KeychainService</text>
+  <text x="450" y="200" text-anchor="middle" font-size="12" fill="#666">JWT stored in the iOS Keychain</text>
+
+  <rect x="610" y="95" width="240" height="120" rx="10" fill="#fff" stroke="#7aa7d9"/>
+  <text x="730" y="118" text-anchor="middle" font-size="14" font-weight="700">Firebase services</text>
+  <text x="730" y="142" text-anchor="middle" font-size="12" fill="#333">SelectionService (CRUD)</text>
+  <text x="730" y="160" text-anchor="middle" font-size="12" fill="#333">UserProfileService</text>
+  <text x="730" y="178" text-anchor="middle" font-size="12" fill="#333">FirebaseErrorMapper</text>
+  <text x="730" y="200" text-anchor="middle" font-size="12" fill="#666">Firebase Firestore SDK</text>
+
+  <!-- Azure -->
+  <rect x="20" y="330" width="410" height="210" rx="14" fill="#f1f7ff" stroke="#0078d4" stroke-width="2"/>
+  <text x="225" y="356" text-anchor="middle" font-size="16" font-weight="700" fill="#0078d4">Azure App Service</text>
+  <rect x="45" y="370" width="360" height="150" rx="10" fill="#fff" stroke="#6aa8e8"/>
+  <text x="225" y="394" text-anchor="middle" font-size="14" font-weight="700">ASP.NET Core Web API</text>
+  <text x="70" y="420" font-size="12" fill="#333">POST /api/auth/register · /api/auth/login  (JWT)</text>
+  <text x="70" y="440" font-size="12" fill="#333">GET /api/elections?city=…</text>
+  <text x="70" y="460" font-size="12" fill="#333">GET /api/offices?city=…</text>
+  <text x="70" y="480" font-size="12" fill="#333">GET /api/candidates?city=…  ·  /{id}?city=…</text>
+  <text x="70" y="505" font-size="12" fill="#666">Accounts and election data</text>
+
+  <!-- Firebase -->
+  <rect x="470" y="330" width="410" height="210" rx="14" fill="#fff8ec" stroke="#f57c00" stroke-width="2"/>
+  <text x="675" y="356" text-anchor="middle" font-size="16" font-weight="700" fill="#e65100">Firebase (appleios-5e236)</text>
+  <rect x="495" y="370" width="240" height="52" rx="10" fill="#fff" stroke="#ffb74d"/>
+  <text x="615" y="392" text-anchor="middle" font-size="14" font-weight="700">Firebase Authentication</text>
+  <text x="615" y="410" text-anchor="middle" font-size="12" fill="#666">same email / password as the API</text>
+  <rect x="495" y="450" width="360" height="70" rx="10" fill="#fff" stroke="#ffb74d"/>
+  <text x="675" y="472" text-anchor="middle" font-size="14" font-weight="700">Cloud Firestore</text>
+  <text x="675" y="492" text-anchor="middle" font-size="12" fill="#333">CandidateSelections · UserProfiles</text>
+  <text x="675" y="510" text-anchor="middle" font-size="12" fill="#666">owner-only security rules</text>
+
+  <!-- Arrows -->
+  <g stroke="#444" stroke-width="1.6" fill="none" marker-end="url(#arrow)">
+    <line x1="150" y1="215" x2="150" y2="368"/>
+    <line x1="400" y1="215" x2="330" y2="368"/>
+    <line x1="500" y1="215" x2="560" y2="368"/>
+    <line x1="800" y1="215" x2="800" y2="448"/>
+  </g>
+  <line x1="615" y1="422" x2="615" y2="448" stroke="#999" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <g font-size="12" fill="#222">
+    <text x="158" y="270">HTTPS + Bearer JWT</text>
+    <text x="158" y="286">?city=Burnaby</text>
+    <text x="378" y="300">login / register</text>
+    <text x="378" y="316">→ JWT</text>
+    <text x="545" y="290">sign-in</text>
+    <text x="808" y="290">reads / writes</text>
+    <text x="808" y="306">selections</text>
+    <text x="808" y="322">and profile</text>
+    <text x="625" y="440" font-size="11" fill="#666">identity for rules</text>
+  </g>
+</svg>

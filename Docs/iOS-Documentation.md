@@ -11,39 +11,11 @@ COMP4977 Assignment 2 (SwiftUI client)
 | Firebase project ID | `appleios-5e236` |
 | iOS bundle ID | `ca.example.Municipal-Elections-Companion` |
 | Municipality used for development and testing | **Burnaby** (Surrey was used to test switching cities) |
+| Simulators used for screenshots | iPhone 17e and iPad Air 11-inch (M4), iOS 27.2 |
 
 ## 2. Architecture diagram
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                     SwiftUI Application (iOS / iPadOS)               │
-│                                                                      │
-│   Views ──▶ ViewModels (@MainActor, @Observable) ──▶ Services        │
-│                                                                      │
-│   ┌──────────────────┐  ┌───────────────────┐  ┌──────────────────┐  │
-│   │  API services     │  │  Auth services     │  │ Firebase services│  │
-│   │  APIClient        │  │  AuthService       │  │ SelectionService │  │
-│   │  ElectionService  │  │  AuthAPIService    │  │ UserProfileSvc   │  │
-│   │  (URLSession)     │  │  KeychainService   │  │ FirebaseAuthSvc  │  │
-│   └────────┬─────────┘  └───┬───────────┬───┘  └────────┬─────────┘  │
-└────────────┼────────────────┼───────────┼───────────────┼────────────┘
-             │ HTTPS + JWT    │ login /   │ email/password│ Firestore SDK
-             │ ?city=Burnaby  │ register  │ sign-in       │
-             ▼                ▼           ▼               ▼
-   ┌────────────────────────────────┐   ┌────────────────────────────────┐
-   │     Azure App Service           │   │           Firebase              │
-   │  ┌──────────────────────────┐  │   │  ┌──────────────────────────┐  │
-   │  │  ASP.NET Core Web API     │  │   │  │  Firebase Authentication │  │
-   │  │  - /api/auth (JWT)        │  │   │  └────────────┬─────────────┘  │
-   │  │  - /api/elections         │  │   │               │ identity for    │
-   │  │  - /api/offices           │  │   │               ▼ security rules  │
-   │  │  - /api/candidates        │  │   │  ┌──────────────────────────┐  │
-   │  └──────────────────────────┘  │   │  │  Cloud Firestore          │  │
-   │   accounts + election data      │   │  │  - CandidateSelections    │  │
-   └────────────────────────────────┘   │  │  - UserProfiles           │  │
-                                         │  └──────────────────────────┘  │
-                                         └────────────────────────────────┘
-```
+![Architecture: SwiftUI app, ASP.NET Core Web API on Azure App Service, Firebase Auth and Cloud Firestore](architecture.svg)
 
 **What each part does**
 
@@ -193,11 +165,59 @@ service cloud.firestore {
 | Change own selection's owner to another user | Denied |
 | Delete own selection | Allowed |
 
-### Firebase screenshots
+### Stored data
 
-- [ ] Firebase project overview (`appleios-5e236`)
-- [ ] Firestore data showing the `CandidateSelections` and `UserProfiles` collections
-- [ ] Firestore Rules tab showing the rules above
+These documents belong to the test account after the screenshots in section 10 were taken. They were read directly from Firestore.
+
+```
+UserProfiles/mec.verify.20261119@example.com
+{
+  "email": "mec.verify.20261119@example.com",
+  "city": "Burnaby",
+  "municipalityId": 3,
+  "lastSync": "2026-11-20T06:37:36Z"
+}
+
+CandidateSelections/mec.verify.20261119@example.com_14
+{
+  "id": "mec.verify.20261119@example.com_14",
+  "userEmail": "mec.verify.20261119@example.com",
+  "candidateId": 14,
+  "candidateName": "Adrian Solano",
+  "positionId": 7,
+  "positionName": "Mayor",
+  "municipalityId": 3,
+  "municipalityName": "Burnaby",
+  "photoUrl": ".../images/demo-candidates/demo-adrian-solano.jpg",
+  "notes": "Strong platform on transit and housing. Attended debate.",
+  "dateCreated": "2026-11-20T06:32:17Z",
+  "dateModified": "2026-11-20T06:32:53Z"
+}
+
+CandidateSelections/mec.verify.20261119@example.com_15
+{
+  "id": "mec.verify.20261119@example.com_15",
+  "userEmail": "mec.verify.20261119@example.com",
+  "candidateId": 15,
+  "candidateName": "Mei Tanaka",
+  "positionId": 8,
+  "positionName": "Councillor",
+  "municipalityId": 3,
+  "municipalityName": "Burnaby",
+  "photoUrl": ".../images/demo-candidates/demo-mei-tanaka.jpg",
+  "notes": "Focused on parks and community safety.",
+  "dateCreated": "2026-11-20T06:33:27Z",
+  "dateModified": "2026-11-20T06:33:27Z"
+}
+```
+
+### Firebase console screenshots
+
+![Firebase project overview (appleios-5e236)](screenshots/firebase-project.png)
+
+![Firestore data: CandidateSelections and UserProfiles collections](screenshots/firestore-data.png)
+
+![Firestore security rules](screenshots/firestore-rules.png)
 
 ## 7. Candidate selections (CRUD)
 
@@ -231,7 +251,7 @@ The spec's example says Pitt Meadows has 5 councillors. The Web API returns 6 co
 | Screen | iPhone portrait | iPhone landscape | iPad portrait | iPad landscape |
 | --- | --- | --- | --- | --- |
 | Navigation | Tab bar, `NavigationStack` per tab | Same | `NavigationSplitView` with sidebar | Same |
-| Candidate directory | Single-column list grouped by office | Wider rows with extra details (biography, email) | Card grid (2 columns) | Card grid (3 columns) |
+| Candidate directory | Single-column list grouped by office | Wider rows with extra details (biography, email) | Card grid | Card grid; the number of columns adapts to the available width |
 | Candidate details | Photo above info | Photo and info side by side | Side by side | Side by side |
 | My Candidate Selections | Scrolling list | Same, no clipping | Same | Same |
 
@@ -263,24 +283,61 @@ The spec's example says Pitt Meadows has 5 councillors. The Web API returns 6 co
 
 ## 10. Screen captures
 
-Take these on the iPhone 16 and iPad Air simulators, while logged in with Burnaby selected:
+Taken on the iPhone 17e and iPad Air 11-inch (M4) simulators with the test account, city Burnaby.
 
-- [ ] Login
-- [ ] Registration
-- [ ] Candidate Directory (only Burnaby candidates)
-- [ ] Candidate Details
-- [ ] Create Selection
-- [ ] Edit Selection
-- [ ] Selection List (My Candidate Selections)
-- [ ] Firebase Firestore data
-- [ ] iPhone Portrait
-- [ ] iPhone Landscape
-- [ ] iPad Portrait
-- [ ] iPad Landscape
-- [ ] City-specific data: the Candidate Directory for Burnaby, then for Surrey after switching, showing that only that city's data appears
+### Login and registration
+
+![Login](screenshots/iphone-login.png)
+![Registration](screenshots/iphone-register.png)
+![Home (City: Burnaby)](screenshots/iphone-home.png)
+
+### Candidate directory and details
+
+![Candidate Directory (iPhone portrait)](screenshots/iphone-directory-portrait.png)
+![Candidate Details](screenshots/iphone-detail-portrait.png)
+![Candidate Details when saved (Edit / Delete Selection)](screenshots/iphone-detail-saved.png)
+
+### Candidate selections (CRUD)
+
+![Create Selection](screenshots/iphone-create-selection.png)
+![Edit Selection](screenshots/iphone-edit-selection.png)
+![Selection List](screenshots/iphone-selections-portrait.png)
+
+![Seat limit validation](screenshots/iphone-seat-limit.png)
+![Delete confirmation](screenshots/iphone-delete-confirm.png)
+![Profile](screenshots/iphone-profile.png)
+
+### Municipality-specific data
+
+After changing the city to Surrey, only Surrey candidates appear and the Burnaby selections are hidden. Compare with the Burnaby directory above.
+
+![Candidate Directory: Surrey](screenshots/iphone-directory-surrey.png)
+![Selections: Surrey (empty)](screenshots/iphone-selections-surrey.png)
+
+### iPhone landscape
+
+![Candidate Directory (iPhone landscape)](screenshots/iphone-directory-landscape.png)
+
+![Selection List (iPhone landscape)](screenshots/iphone-selections-landscape.png)
+
+### iPad portrait
+
+![Candidate Directory (iPad portrait)](screenshots/ipad-directory-portrait.png)
+![Selection List (iPad portrait)](screenshots/ipad-selections-portrait.png)
+
+### iPad landscape
+
+![Candidate Directory (iPad landscape)](screenshots/ipad-directory-landscape.png)
+
+![Candidate Details (iPad landscape, side by side)](screenshots/ipad-detail-landscape.png)
+
+![Selection List (iPad landscape)](screenshots/ipad-selections-landscape.png)
+
+![Profile (iPad)](screenshots/ipad-profile.png)
 
 ## 11. Known limitations
 
+- **First request after idle:** the Azure App Service can take about 15 seconds to wake up, so the first login after a quiet period may time out. Trying again works.
 - **Offline saving:** with no connection, Save waits until the connection returns before finishing.
 - **Selection count:** the Profile screen's total counts only the current city's selections, since other cities' selections are hidden.
 - **Tests:** there are no automated unit tests yet.
